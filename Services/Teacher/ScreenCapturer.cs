@@ -121,7 +121,7 @@ namespace ClassRoom_Control.Services.Teacher
                 null,
                 Vortice.Direct3D.DriverType.Hardware,
                 Vortice.Direct3D11.DeviceCreationFlags.BgraSupport,
-                null,
+                null!,
                 out _d3dDevice,
                 out _d3dContext).CheckError();
 
