@@ -20,16 +20,20 @@
                 </Grid.RowDefinitions>
 
                 <!-- Sidebar Header (Row 0) -->
-                <Border Grid.Row="0" Padding="16,16,16,14"
+                <Border Grid.Row="0" Padding="16,14,16,14"
                         BorderBrush="{StaticResource BgLightBrush}" BorderThickness="0,0,0,1">
-                    <StackPanel>
-                        <TextBlock Text="ClassRoom Control"
-                                   FontSize="15" FontWeight="Bold"
-                                   Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource StatusGreenBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="Режим преподавателя"
-                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="/app.png" Width="30" Height="30" Margin="0,0,10,0"
+                               VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="ClassRoom Control"
+                                       FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                <Ellipse Width="7" Height="7" Fill="{StaticResource AccentBlueBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Режим преподавателя"
+                                           FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </Border>

@@ -210,16 +210,11 @@ public partial class SettingsView : UserControl
     {
         try
         {
-            string devId = TelegramService.GetEffectiveDevChatId();
-            string url = !string.IsNullOrWhiteSpace(devId) && !devId.StartsWith("-")
-                ? $"tg://user?id={devId}"
-                : "https://t.me/";
-
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AppMetadata.DeveloperTelegram) { UseShellExecute = true });
         }
-        catch
+        catch (Exception ex)
         {
-            try { Process.Start(new ProcessStartInfo("https://t.me/") { UseShellExecute = true }); } catch { }
+            MessageBox.Show($"Не удалось открыть Telegram: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
