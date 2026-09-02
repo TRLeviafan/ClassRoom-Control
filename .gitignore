@@ -1,0 +1,41 @@
+## Security & Local Secrets (НИКОГДА НЕ ПУШИТЬ!)
+secrets.json
+app_settings.json
+*.secret
+*.key
+
+## Build & Output Directories
+bin/
+obj/
+artifacts/
+publish/
+
+## Visual Studio & IDE files
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.DotSettings.user
+
+## Media Recordings & Temp files
+*.mp4
+*.mkv
+*.avi
+*.wav
+*.aac
+*.h264
+*.ts
+recordings/
+crash_reports/
+logs/
+scratch/
+enums.txt
+
+## OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

@@ -1,0 +1,51 @@
+﻿<Window x:Class="ClassRoom_Control.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ClassRoom Control"
+        Width="1280" Height="800"
+        MinWidth="1024" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgMediumBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        FontFamily="{StaticResource MainFont}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="40"
+                      CornerRadius="10"
+                      GlassFrameThickness="0"
+                      ResizeBorderThickness="6"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Custom Title Bar -->
+        <Border Grid.Row="0" Background="{StaticResource BgDarkerBrush}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                    <!-- Blue dot logo -->
+                    <Ellipse Width="12" Height="12" Fill="{StaticResource AccentBlueBrush}" Margin="0,0,10,0"/>
+                    <TextBlock Text="ClassRoom Control"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="13" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Window Controls -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Style="{StaticResource IconButton}" Content="─" Click="MinimizeClick" ToolTip="Свернуть"/>
+                    <Button Style="{StaticResource IconButton}" Content="□" Click="MaximizeClick" ToolTip="Развернуть"/>
+                    <Button x:Name="CloseBtn" Style="{StaticResource IconButton}" Content="✕" Click="CloseClick" ToolTip="Закрыть"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content Area -->
+        <ContentControl x:Name="ContentArea" Grid.Row="1"/>
+    </Grid>
+</Window>

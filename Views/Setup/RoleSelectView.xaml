@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="ClassRoom_Control.Views.Setup.RoleSelectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BgMediumBrush}">
+
+    <Grid>
+        <!-- Centered content -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="480">
+
+            <!-- Logo area -->
+            <Border HorizontalAlignment="Center" Margin="0,0,0,24">
+                <Grid>
+                    <Ellipse Width="80" Height="80" StrokeThickness="3" Stroke="{StaticResource AccentBlueBrush}">
+                        <Ellipse.Fill>
+                            <SolidColorBrush Color="{StaticResource AccentBlueMuted}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Text="CC" FontSize="28" FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlueLightBrush}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Title -->
+            <TextBlock Text="Добро пожаловать"
+                       FontSize="28" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+            <TextBlock Text="Выберите роль для этого компьютера"
+                       FontSize="15"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       HorizontalAlignment="Center" Margin="0,0,0,40"/>
+
+            <!-- Role Cards -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Teacher Card -->
+                <Border Grid.Column="0" Style="{StaticResource StudentCard}"
+                        x:Name="TeacherCard" MouseDown="TeacherCardClick" Padding="20">
+                    <StackPanel>
+                        <Border Width="56" Height="56" CornerRadius="28"
+                                Background="{StaticResource AccentBlueMutedBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="🖥️" FontSize="24"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Преподаватель" FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Управление классом, демонстрация экрана, запись уроков"
+                                   FontSize="12" TextWrapping="Wrap" TextAlignment="Center"
+                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Student Card -->
+                <Border Grid.Column="2" Style="{StaticResource StudentCard}"
+                        x:Name="StudentCard" MouseDown="StudentCardClick" Padding="20">
+                    <StackPanel>
+                        <Border Width="56" Height="56" CornerRadius="28"
+                                Background="{StaticResource AccentBlueMutedBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="💻" FontSize="24"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Ученик" FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Приём демонстрации, подключение к преподавателю"
+                                   FontSize="12" TextWrapping="Wrap" TextAlignment="Center"
+                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Student Name Field (hidden until student is selected) -->
+            <StackPanel x:Name="StudentNamePanel" Visibility="Collapsed" Margin="0,24,0,0">
+                <TextBlock Text="Имя компьютера" FontSize="13" FontWeight="Medium"
+                           Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,8"/>
+                <TextBox x:Name="StudentNameBox" Style="{StaticResource DarkTextBox}"
+                         Text="" MaxLength="30"/>
+            </StackPanel>
+
+            <!-- Confirm Button -->
+            <Button x:Name="ConfirmBtn" Style="{StaticResource PrimaryButton}"
+                    Content="Продолжить" Margin="0,32,0,0"
+                    IsEnabled="False" Click="ConfirmClick"
+                    HorizontalAlignment="Stretch"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

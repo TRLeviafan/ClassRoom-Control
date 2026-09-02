@@ -1,0 +1,304 @@
+<UserControl x:Class="ClassRoom_Control.Views.Teacher.NotesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BgMediumBrush}">
+
+    <UserControl.Resources>
+        <!-- Compact ToolButton style -->
+        <Style x:Key="FormatBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="MinWidth" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource BgLightBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource AccentBlueMutedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Color Circle Chip Button -->
+        <Style x:Key="ColorChip" TargetType="Button">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="3,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" Width="18" Height="18"
+                                     Stroke="{StaticResource BgLighterBrush}" StrokeThickness="1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ellipse" Property="Stroke" Value="White"/>
+                                <Setter TargetName="ellipse" Property="StrokeThickness" Value="2"/>
+                                <Setter TargetName="ellipse" Property="Width" Value="20"/>
+                                <Setter TargetName="ellipse" Property="Height" Value="20"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!--           LEFT: NOTES LIST              -->
+        <!-- ═══════════════════════════════════════ -->
+        <Border Grid.Column="0" Background="{StaticResource BgDarkBrush}"
+                BorderBrush="{StaticResource BgLightBrush}" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Top Header: Title & New Note Button -->
+                <Border Grid.Row="0" Padding="16,16,16,12"
+                        BorderBrush="{StaticResource BgLightBrush}" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Заметки" FontSize="18" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock x:Name="NotesCountText" Text="2 заметки" FontSize="12"
+                                       Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- + New Note Button -->
+                        <Button Style="{StaticResource PrimaryButton}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Height="36" MinHeight="32" Padding="14,0" FontSize="13"
+                                Click="NewNote_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="+" FontSize="14" FontWeight="Bold" Margin="0,0,4,0"/>
+                                <TextBlock Text="Создать"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- Search Input -->
+                <Border Grid.Row="1" Padding="12,10"
+                        BorderBrush="{StaticResource BgLightBrush}" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <TextBox x:Name="SearchBox" Style="{StaticResource DarkTextBox}"
+                                 Padding="10,6" FontSize="12"
+                                 TextChanged="SearchBox_TextChanged"/>
+                        <TextBlock x:Name="SearchPlaceholder"
+                                   Text="🔍 Поиск заметок..."
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
+                                   IsHitTestVisible="False"/>
+                    </Grid>
+                </Border>
+
+                <!-- Notes Cards List -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel x:Name="NotesListPanel" Margin="8,8,8,8"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!--           RIGHT: NOTE EDITOR            -->
+        <!-- ═══════════════════════════════════════ -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Note Title + Info -->
+                <RowDefinition Height="Auto"/> <!-- Formatting Toolbar -->
+                <RowDefinition Height="*"/>    <!-- RichTextBox Editor Canvas -->
+            </Grid.RowDefinitions>
+
+            <!-- Note Header: Title & Info -->
+            <Border Grid.Row="0" Padding="24,16,24,8"
+                    BorderBrush="{StaticResource BgLightBrush}" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <!-- Editable Title -->
+                        <TextBox x:Name="NoteTitleBox"
+                                 Background="Transparent"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 CaretBrush="{StaticResource AccentBlueBrush}"
+                                 BorderThickness="0"
+                                 FontSize="22" FontWeight="Bold"
+                                 FontFamily="{StaticResource MainFont}"
+                                 Padding="0" Margin="0,0,40,0"
+                                 TextChanged="NoteTitleBox_TextChanged"/>
+
+                        <!-- Delete Current Note Button -->
+                        <Button Style="{StaticResource FormatBtn}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                ToolTip="Удалить эту заметку"
+                                Click="DeleteCurrentNote_Click">
+                            <TextBlock Text="🗑️" FontSize="15"/>
+                        </Button>
+                    </Grid>
+
+                    <!-- Timestamp and info -->
+                    <TextBlock x:Name="NoteInfoText" Grid.Row="1"
+                               Text="Изменено: 02.09.2026, 19:15"
+                               FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                               Margin="0,4,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- Formatting Toolbar -->
+            <Border Grid.Row="1" Background="{StaticResource BgDarkBrush}"
+                    Margin="24,12,24,8" Padding="8,4" CornerRadius="6"
+                    BorderBrush="{StaticResource BgLightBrush}" BorderThickness="1">
+                <WrapPanel VerticalAlignment="Center">
+                    <!-- Text Style: Bold (Жирный) -->
+                    <Button Style="{StaticResource FormatBtn}" Click="Bold_Click" ToolTip="Жирный (Ctrl+B)">
+                        <TextBlock Text="Ж" FontWeight="Bold" FontSize="14"/>
+                    </Button>
+
+                    <!-- Text Style: Italic (Курсив) -->
+                    <Button Style="{StaticResource FormatBtn}" Click="Italic_Click" ToolTip="Курсив (Ctrl+I)">
+                        <TextBlock Text="К" FontStyle="Italic" FontSize="14"/>
+                    </Button>
+
+                    <!-- Text Style: Underline (Подчёркнутый) -->
+                    <Button Style="{StaticResource FormatBtn}" Click="Underline_Click" ToolTip="Подчёркнутый (Ctrl+U)">
+                        <TextBlock Text="Ч" TextDecorations="Underline" FontSize="14"/>
+                    </Button>
+
+                    <!-- Text Style: Strikethrough (Зачёркнутый) -->
+                    <Button Style="{StaticResource FormatBtn}" Click="Strike_Click" ToolTip="Зачеркнуть текст">
+                        <TextBlock Text="~~S~~" FontSize="13" TextDecorations="Strikethrough" FontWeight="Medium"/>
+                    </Button>
+
+                    <!-- Divider -->
+                    <Border Width="1" Height="18" Background="{StaticResource BgLightBrush}" Margin="8,0"/>
+
+                    <!-- Headings -->
+                    <Button Style="{StaticResource FormatBtn}" Click="H1_Click" ToolTip="Большой заголовок">
+                        <TextBlock Text="H1" FontWeight="Bold" FontSize="13"/>
+                    </Button>
+                    <Button Style="{StaticResource FormatBtn}" Click="H2_Click" ToolTip="Подзаголовок">
+                        <TextBlock Text="H2" FontWeight="SemiBold" FontSize="12"/>
+                    </Button>
+                    <Button Style="{StaticResource FormatBtn}" Click="NormalSize_Click" ToolTip="Обычный текст">
+                        <TextBlock Text="Обычный" FontSize="12"/>
+                    </Button>
+
+                    <!-- Divider -->
+                    <Border Width="1" Height="18" Background="{StaticResource BgLightBrush}" Margin="8,0"/>
+
+                    <!-- Lists -->
+                    <Button Style="{StaticResource FormatBtn}" Click="BulletList_Click" ToolTip="Маркированный список">
+                        <TextBlock Text="• Список" FontSize="12"/>
+                    </Button>
+                    <Button Style="{StaticResource FormatBtn}" Click="NumberedList_Click" ToolTip="Нумерованный список">
+                        <TextBlock Text="1. Список" FontSize="12"/>
+                    </Button>
+
+                    <!-- Divider -->
+                    <Border Width="1" Height="18" Background="{StaticResource BgLightBrush}" Margin="8,0"/>
+
+                    <!-- Color Palette (Смена цвета текста) -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Цвет:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+
+                        <!-- White -->
+                        <Button Style="{StaticResource ColorChip}" Background="#f2f3f5" Tag="#f2f3f5"
+                                Click="ColorChip_Click" ToolTip="Белый"/>
+                        <!-- Discord Blue -->
+                        <Button Style="{StaticResource ColorChip}" Background="#3b82f6" Tag="#3b82f6"
+                                Click="ColorChip_Click" ToolTip="Синий"/>
+                        <!-- Cyan -->
+                        <Button Style="{StaticResource ColorChip}" Background="#06b6d4" Tag="#06b6d4"
+                                Click="ColorChip_Click" ToolTip="Бирюзовый"/>
+                        <!-- Green -->
+                        <Button Style="{StaticResource ColorChip}" Background="#22c55e" Tag="#22c55e"
+                                Click="ColorChip_Click" ToolTip="Зеленый"/>
+                        <!-- Yellow -->
+                        <Button Style="{StaticResource ColorChip}" Background="#eab308" Tag="#eab308"
+                                Click="ColorChip_Click" ToolTip="Желтый"/>
+                        <!-- Orange -->
+                        <Button Style="{StaticResource ColorChip}" Background="#f97316" Tag="#f97316"
+                                Click="ColorChip_Click" ToolTip="Оранжевый"/>
+                        <!-- Red -->
+                        <Button Style="{StaticResource ColorChip}" Background="#ef4444" Tag="#ef4444"
+                                Click="ColorChip_Click" ToolTip="Красный"/>
+                        <!-- Purple -->
+                        <Button Style="{StaticResource ColorChip}" Background="#a855f7" Tag="#a855f7"
+                                Click="ColorChip_Click" ToolTip="Фиолетовый"/>
+                    </StackPanel>
+
+                    <!-- Divider -->
+                    <Border Width="1" Height="18" Background="{StaticResource BgLightBrush}" Margin="8,0"/>
+
+                    <!-- Clear Formatting -->
+                    <Button Style="{StaticResource FormatBtn}" Click="ClearFormat_Click" ToolTip="Очистить форматирование">
+                        <TextBlock Text="✕ Очистить" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </Button>
+                </WrapPanel>
+            </Border>
+
+            <!-- Rich Editor Canvas -->
+            <Border Grid.Row="2" Background="{StaticResource BgDarkerBrush}"
+                    Margin="24,0,24,20" CornerRadius="8"
+                    BorderBrush="{StaticResource BgLightBrush}" BorderThickness="1">
+                <RichTextBox x:Name="NoteEditor"
+                             Background="Transparent"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             CaretBrush="{StaticResource AccentBlueBrush}"
+                             BorderThickness="0"
+                             FontFamily="{StaticResource MainFont}"
+                             FontSize="14"
+                             Padding="20"
+                             AcceptsTab="True"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             IsDocumentEnabled="True"
+                             TextChanged="NoteEditor_TextChanged">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0,0,0,6"/>
+                            <Setter Property="LineHeight" Value="22"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                    <FlowDocument PagePadding="0">
+                        <Paragraph>
+                            <Run Text=""/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
