@@ -9,6 +9,7 @@ bin/
 obj/
 artifacts/
 publish/
+publish_standalone/
 
 ## Visual Studio & IDE files
 .vs/
